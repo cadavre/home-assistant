@@ -125,6 +125,10 @@ class Fan(HomeAccessory):
     def set_speed(self, value):
         """Set state if call came from HomeKit."""
         _LOGGER.debug("%s: Set speed to %d", self.entity_id, value)
+        if value == 0:
+            # Instead of setting speed to 0 - turn the fan off.
+            self.set_state(0)
+            return
         speed = self.speed_mapping.speed_to_states(value)
         params = {ATTR_ENTITY_ID: self.entity_id, ATTR_SPEED: speed}
         self.call_service(DOMAIN, SERVICE_SET_SPEED, params, speed)

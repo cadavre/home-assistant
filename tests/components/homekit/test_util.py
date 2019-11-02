@@ -237,7 +237,16 @@ def test_homekit_speed_mapping():
         "high": SpeedRange(300 / 4, 100),
     }
 
-    # a Dyson-like fan with 10 speeds
+    # Any standard fan with no "off" as first "speed" option
+    speed_mapping = HomeKitSpeedMapping(["low", "medium", "high"])
+    assert speed_mapping.speed_ranges == {
+        "off": SpeedRange(0, 0),
+        "low": SpeedRange(100 / 4, 100 / 3),
+        "medium": SpeedRange(200 / 4, 200 / 3),
+        "high": SpeedRange(300 / 4, 100),
+    }
+
+    # A Dyson-like fan with 10 speeds
     speed_mapping = HomeKitSpeedMapping([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     assert speed_mapping.speed_ranges == {
         0: SpeedRange(0, 0),

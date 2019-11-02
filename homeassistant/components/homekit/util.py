@@ -171,15 +171,9 @@ class HomeKitSpeedMapping:
 
     def __init__(self, speed_list):
         """Initialize a new SpeedMapping object."""
-        if speed_list[0] != fan.SPEED_OFF:
-            _LOGGER.warning(
-                "%s does not contain the speed setting "
-                "%s as its first element. "
-                "Assuming that %s is equivalent to 'off'.",
-                speed_list,
-                fan.SPEED_OFF,
-                speed_list[0],
-            )
+        if speed_list[0] not in [0, fan.SPEED_OFF]:
+            # HK set_speed(0) equals turn fan off.
+            speed_list.insert(0, fan.SPEED_OFF)
         self.speed_ranges = OrderedDict()
         list_size = len(speed_list)
         for index, speed in enumerate(speed_list):
